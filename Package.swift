@@ -37,6 +37,7 @@ let package = Package(
             name: "GTube",
             dependencies: ["GTubeCore", "CMpv"],
             path: "Sources/GTube",
+            swiftSettings: [.unsafeFlags(["-Xcc", "-DGL_SILENCE_DEPRECATION"])],
             linkerSettings: [
                 .linkedFramework("OpenGL"),
                 .linkedFramework("MediaPlayer"),
