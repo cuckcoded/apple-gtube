@@ -596,7 +596,7 @@ final class PlayerModel {
         return Subtitles.preferred(c, lang: s.subtitleLanguage, translate: s.subtitleTranslate)
     }
 
-    var suggestedTranslations: [Translation] {
+    var suggestedTranslations: [SubtitleTranslation] {
         let s = Config.settings
         return Subtitles.suggested(captions, [s.subtitleLang, s.language])
     }

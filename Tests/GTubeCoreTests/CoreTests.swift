@@ -240,7 +240,7 @@ final class ExtractTests: XCTestCase {
         XCTAssertEqual(c.tracks.map(\.name), ["English", "German (Germany)", "English (auto-generated)"])
         XCTAssertEqual(c.tracks.map(\.lang), ["en", "de-DE", "en"])
         XCTAssertEqual(c.tracks.map(\.auto), [false, false, true])
-        XCTAssertEqual(c.translations, [Translation(code: "af", name: "Afrikaans"), Translation(code: "it", name: "Italian")])
+        XCTAssertEqual(c.translations, [SubtitleTranslation(code: "af", name: "Afrikaans"), SubtitleTranslation(code: "it", name: "Italian")])
         XCTAssertEqual(c.tracks[0].url, tt("lang=en"))
         XCTAssertEqual(c.tracks[2].vttURL("pt-BR"), tt("lang=en&kind=asr") + "&fmt=vtt&tlang=pt-BR")
         XCTAssertEqual(try Extract.parse(JSON(any: ["url": "u"])).captions, Captions())
@@ -263,7 +263,7 @@ final class ExtractTests: XCTestCase {
 final class SubtitleTests: XCTestCase {
     func captions(_ tracks: [(String, Bool)], _ translations: [String]) -> Captions {
         Captions(tracks: tracks.map { CaptionTrack(lang: $0.0, name: $0.0, auto: $0.1, url: "https://www.youtube.com/api/timedtext?lang=\($0.0)") },
-                 translations: translations.map { Translation(code: $0, name: $0) })
+                 translations: translations.map { SubtitleTranslation(code: $0, name: $0) })
     }
 
     func testPrefersUploadedTracksInTheLanguage() {

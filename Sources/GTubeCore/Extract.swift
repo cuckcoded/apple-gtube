@@ -119,14 +119,14 @@ public struct Captions: Equatable, Sendable {
     /// Uploaded tracks (by name), then auto-generated ones.
     public var tracks: [CaptionTrack] = []
     /// Languages YouTube can translate into: (code, name), by name.
-    public var translations: [Translation] = []
-    public init(tracks: [CaptionTrack] = [], translations: [Translation] = []) {
+    public var translations: [SubtitleTranslation] = []
+    public init(tracks: [CaptionTrack] = [], translations: [SubtitleTranslation] = []) {
         self.tracks = tracks
         self.translations = translations
     }
 }
 
-public struct Translation: Equatable, Hashable, Sendable {
+public struct SubtitleTranslation: Equatable, Hashable, Sendable {
     public var code: String
     public var name: String
     public init(code: String, name: String) {
@@ -253,7 +253,7 @@ public enum Extract {
             let (u, name) = fu
             if let t = query(u, "tlang") {
                 if !c.translations.contains(where: { $0.code == t }) {
-                    c.translations.append(Translation(code: t, name: name ?? key))
+                    c.translations.append(SubtitleTranslation(code: t, name: name ?? key))
                 }
             } else if query(u, "kind") == "asr" {
                 var trimmed = key
@@ -372,8 +372,8 @@ public enum Subtitles {
     }
 
     /// The translations into `langs` (the languages you use), in that order.
-    public static func suggested(_ c: Captions, _ langs: [String]) -> [Translation] {
-        var out: [Translation] = []
+    public static func suggested(_ c: Captions, _ langs: [String]) -> [SubtitleTranslation] {
+        var out: [SubtitleTranslation] = []
         for lang in langs where !lang.isEmpty {
             let found = c.translations.first { $0.code.lowercased() == lang.lowercased() } ?? c.translations.first { primary($0.code) == primary(lang) }
             if let t = found, !out.contains(t) { out.append(t) }
