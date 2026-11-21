@@ -37,7 +37,7 @@ Requires macOS 14 (Sonoma) or newer.
 ## Build
 
 ```sh
-brew install mpv pkgconf yt-dlp deno ffmpeg
+brew install mpv yt-dlp deno ffmpeg
 swift build -c release        # .build/release/GTube
 swift test                    # parser and logic tests
 packaging/bundle.sh           # build/GTube.app and build/GTube-macos-arm64.zip (also needs: brew install librsvg dylibbundler)
@@ -114,7 +114,7 @@ Layout:
 
 - `Sources/GTubeCore`: everything that isn't UI, Foundation only — the InnerTube client (`InnerTube.swift`) and its parsers (`Parse.swift`, `Music.swift`), lyrics, watch-history reports (`Stats.swift`), SponsorBlock and Return YouTube Dislike (`Extras.swift`), yt-dlp and subtitles (`Extract.swift`), settings and accounts.
 - `Sources/GTube`: the app. `Player/` is playback (libmpv's OpenGL render API into a `CAOpenGLLayer`, the player model and its controls), `Video/` is YouTube mode, `Music/` is YouTube Music mode, `Dialogs/` the dialogs and settings.
-- `Sources/CMpv`: libmpv's C headers, found with pkg-config.
+- `Sources/CMpv`: libmpv's C headers (mpv's own, ISC license); the library comes from Homebrew.
 - `Tests/GTubeCoreTests`: the original's parser and logic tests, ported.
 
 `GTUBE_MPV_AO` overrides mpv's audio output (e.g. `null`), `GTUBE_SPONSORBLOCK_API` points SponsorBlock at another server, and `GTUBE_STATS_DRY_RUN=1` writes the watch-history reports to the log instead of sending them.

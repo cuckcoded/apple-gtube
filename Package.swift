@@ -2,7 +2,7 @@
 //
 // GTube for macOS: a native YouTube and YouTube Music client.
 //
-//   swift build -c release      # the program (needs `brew install mpv pkgconf`)
+//   swift build -c release      # the program (needs `brew install mpv`)
 //   swift test                  # parser and logic tests (GTubeCore)
 //   packaging/bundle.sh         # build/GTube.app, with libmpv, yt-dlp and deno inside
 import PackageDescription
@@ -15,12 +15,15 @@ let package = Package(
         .library(name: "GTubeCore", targets: ["GTubeCore"]),
     ],
     targets: [
-        // libmpv's C API (client + OpenGL render API), found through pkg-config.
-        .systemLibrary(
+        // libmpv's C API (client + OpenGL render API); libmpv from Homebrew.
+        .target(
             name: "CMpv",
             path: "Sources/CMpv",
-            pkgConfig: "mpv",
-            providers: [.brew(["mpv"])]
+            publicHeadersPath: "include",
+            linkerSettings: [
+                .linkedLibrary("mpv"),
+                .unsafeFlags(["-L/opt/homebrew/lib", "-L/usr/local/lib"]),
+            ]
         ),
         // Everything that isn't UI: the InnerTube client and its parsers,
         // YouTube Music, lyrics, watch-history reports, SponsorBlock, Return
