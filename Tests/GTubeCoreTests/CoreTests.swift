@@ -166,7 +166,7 @@ final class LyricsTests: XCTestCase {
     }
 
     func testReadsYouTubeTimedLyrics() throws {
-        let v = try JSON(string: #"{"contents": {"elementRenderer": {"newElement": {"type": {"componentType": {"model": {"timedLyricsModel": {"lyricsData": {"timedLyricsData": [{"lyricLine": "Two", "cueRange": {"startTimeMilliseconds": "20450", "endTimeMilliseconds": "24930"}}, {"lyricLine": "One", "cueRange": {"startTimeMilliseconds": "1000", "endTimeMilliseconds": "2000"}}, {"lyricLine": "♪", "cueRange": {"startTimeMilliseconds": "30000", "endTimeMilliseconds": "40000"}}], "sourceMessage": "Source: Musixmatch"}}}}}}}}"#)
+        let v = try JSON(string: #"{"contents": {"elementRenderer": {"newElement": {"type": {"componentType": {"model": {"timedLyricsModel": {"lyricsData": {"timedLyricsData": [{"lyricLine": "Two", "cueRange": {"startTimeMilliseconds": "20450", "endTimeMilliseconds": "24930"}}, {"lyricLine": "One", "cueRange": {"startTimeMilliseconds": "1000", "endTimeMilliseconds": "2000"}}, {"lyricLine": "♪", "cueRange": {"startTimeMilliseconds": "30000", "endTimeMilliseconds": "40000"}}], "sourceMessage": "Source: Musixmatch"}}}}}}}}}"#)
         let l = LyricsParse.timed(v)!
         XCTAssertTrue(l.isTimed)
         XCTAssertEqual(l.lines[0], LyricLine(start: 1, text: "One"))
