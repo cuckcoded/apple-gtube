@@ -46,21 +46,27 @@ jobs:
           brew unlink mpv
           build/GTube.app/Contents/MacOS/GTube --version
       - name: Launch test
-        # Starts the app (mpv, OpenGL, the window), opens a video, and checks
-        # it is still running; the log shows what happened.
+        # Starts the app the way Finder does, checks it keeps running, and
+        # prints screenshots (small JPEGs, base64) and its log.
         run: |
-          GTUBE_MPV_AO=null build/GTube.app/Contents/MacOS/GTube "https://www.youtube.com/watch?v=jNQXAC9IVRw" &
-          pid=$!
-          sleep 45
-          screencapture -x build/screen-video.png || true
+          shot() {
+            screencapture -x "build/screen-$1.png" || return 0
+            sips -s format jpeg -s formatOptions 45 -Z 1100 "build/screen-$1.png" --out "build/screen-$1.jpg" >/dev/null
+            echo "--- screenshot $1 (base64 jpeg)"
+            base64 -i "build/screen-$1.jpg" | fold -w 2000
+            echo "--- end screenshot $1"
+          }
+          open build/GTube.app
+          sleep 30
+          shot video
           open "gtube://mode/music"
-          sleep 20
-          screencapture -x build/screen-music.png || true
+          sleep 25
+          shot music
           alive=0
-          kill -0 $pid 2>/dev/null && alive=1
+          pgrep -x GTube >/dev/null && alive=1
           echo "--- gtube.log"
           cat ~/Library/Logs/GTube/gtube.log || true
-          kill $pid 2>/dev/null || true
+          pkill -x GTube || true
           if [ $alive != 1 ]; then echo "GTube exited or crashed"; ls ~/Library/Logs/DiagnosticReports | tail -5; exit 1; fi
       - uses: actions/upload-artifact@v4
         if: always()
