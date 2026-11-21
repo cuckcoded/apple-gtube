@@ -128,7 +128,7 @@ public final class Client: @unchecked Sendable {
     public func setCookies(_ jar: CookieJar) {
         var jar = jar
         // Pre-answer the EU cookie consent wall ("reject all"), like yt-dlp does.
-        if jar.get("www.youtube.com", "SOCS") == nil && jar.get("www.youtube.com", "CONSENT") == nil {
+        if jar.value("www.youtube.com", "SOCS") == nil && jar.value("www.youtube.com", "CONSENT") == nil {
             jar.set(".youtube.com", "SOCS", "CAI")
         }
         mutate { s in
@@ -227,7 +227,7 @@ public final class Client: @unchecked Sendable {
         let ts = String(nowSecs())
         var parts: [String] = []
         for (scheme, name) in [("SAPISIDHASH", "SAPISID"), ("SAPISID1PHASH", "__Secure-1PAPISID"), ("SAPISID3PHASH", "__Secure-3PAPISID")] {
-            guard let sid = s.cookies.get("www.youtube.com", name) else { continue }
+            guard let sid = s.cookies.value("www.youtube.com", name) else { continue }
             var input: [String] = []
             if let u = s.userSessionId { input.append(u) }
             input += [ts, sid, origin]

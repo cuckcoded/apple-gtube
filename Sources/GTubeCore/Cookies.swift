@@ -80,7 +80,7 @@ public struct CookieJar: Sendable {
     }
 
     /// The value of a cookie that applies to `host`.
-    public func get(_ host: String, _ name: String) -> String? {
+    public func value(_ host: String, _ name: String) -> String? {
         let now = nowSecs()
         return cookies.first { $0.name == name && Self.domainMatches($0.domain, host) && ($0.expires == 0 || $0.expires > now) }?.value
     }
@@ -106,7 +106,7 @@ public struct CookieJar: Sendable {
     }
 
     public var hasLogin: Bool {
-        get("www.youtube.com", "SAPISID") != nil || get("www.youtube.com", "__Secure-3PAPISID") != nil
+        value("www.youtube.com", "SAPISID") != nil || value("www.youtube.com", "__Secure-3PAPISID") != nil
     }
 
     /// Only what youtube.com needs; browsers export every site.
