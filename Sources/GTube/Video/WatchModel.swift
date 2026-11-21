@@ -105,7 +105,7 @@ final class WatchModel {
     var player: PlayerModel { AppModel.shared.player }
 
     init() {
-        queue.onChanged = { [unowned self] in updateSkip() }
+        queue.onChanged = { [self] in updateSkip() }
     }
 
     /// Opens `v` (optionally as part of a queue) and shows the page.

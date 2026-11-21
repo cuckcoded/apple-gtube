@@ -136,10 +136,10 @@ final class AppModel {
 
         // The player is shared: what it does next depends on which mode
         // started the current item.
-        player.onEnded = { [unowned self] in
+        player.onEnded = { [self] in
             if player.isMusicOwned { music.queue.onEnded() } else { watch.playNext() }
         }
-        player.onExpand = { [unowned self] in
+        player.onExpand = { [self] in
             if player.isMusicOwned {
                 setMode(music: true)
                 music.showNow(true)
@@ -148,21 +148,21 @@ final class AppModel {
                 showWatch()
             }
         }
-        player.onState = { [unowned self] in
+        player.onState = { [self] in
             music.onPlayerState()
             NowPlaying.shared.update()
         }
         player.onSeeked = { _ in NowPlaying.shared.seeked() }
-        player.onError = { [unowned self] _ in
+        player.onError = { [self] _ in
             if player.isMusicOwned { music.queue.onError() }
         }
-        player.onMusicVideo = { [unowned self] video in
+        player.onMusicVideo = { [self] video in
             music.queue.videoSwitched(video)
         }
-        player.onMinimize = { [unowned self] in
+        player.onMinimize = { [self] in
             if path.last == .watch { path.removeLast() }
         }
-        player.onSegments = { [unowned self] segs in watch.setSegments(segs) }
+        player.onSegments = { [self] segs in watch.setSegments(segs) }
 
         NowPlaying.shared.start()
         Spectrum.initialize()
