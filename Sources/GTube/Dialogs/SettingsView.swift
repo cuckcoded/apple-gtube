@@ -10,7 +10,7 @@ final class SettingsVersion {
 
 /// A settings value read from and written to `Config`.
 @MainActor
-func setting<T>(_ key: WritableKeyPath<Settings, T>, then: ((T) -> Void)? = nil) -> Binding<T> {
+func setting<T>(_ key: WritableKeyPath<GTubeCore.Settings, T>, then: ((T) -> Void)? = nil) -> Binding<T> {
     Binding(get: {
         _ = SettingsVersion.shared.value
         return Config.settings[keyPath: key]

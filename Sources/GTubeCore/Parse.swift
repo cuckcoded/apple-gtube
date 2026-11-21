@@ -739,7 +739,7 @@ public enum Parse {
             return segs.first.map { .video(id: $0, playlist: q("list"), start: start) }
         }
         if !host.hasSuffix("youtube.com") && !host.hasSuffix("youtube-nocookie.com") { return nil }
-        switch segs.first {
+        switch segs.first ?? "" {
         case "watch" where segs.count == 1:
             return q("v").map { .video(id: $0, playlist: q("list"), start: start) }
         case "shorts", "live", "embed", "v":

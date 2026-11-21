@@ -135,8 +135,8 @@ final class MusicTests: XCTestCase {
 
     func testMusicURLs() {
         XCTAssertEqual(Music.musicURL("https://music.youtube.com/watch?v=abc&list=RDx"), .watch(videoId: "abc", playlistId: "RDx", params: nil, index: nil))
-        XCTAssertEqual(Music.musicURL("music.youtube.com/playlist?list=PL1"), .browse("VLPL1"))
-        XCTAssertEqual(Music.musicURL("https://music.youtube.com/browse/MPREb_1"), .browse("MPREb_1"))
+        XCTAssertEqual(Music.musicURL("music.youtube.com/playlist?list=PL1"), .browseTo("VLPL1"))
+        XCTAssertEqual(Music.musicURL("https://music.youtube.com/browse/MPREb_1"), .browseTo("MPREb_1"))
         XCTAssertNil(Music.musicURL("https://www.youtube.com/watch?v=abc"))
     }
 }

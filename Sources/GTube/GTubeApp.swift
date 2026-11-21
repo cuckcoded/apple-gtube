@@ -129,7 +129,7 @@ struct GTubeApp: App {
         .defaultSize(width: CGFloat(max(Config.settings.windowWidth, 480)), height: CGFloat(max(Config.settings.windowHeight, 400)))
         .commands { GTubeCommands() }
 
-        Settings {
+        SwiftUI.Settings {
             SettingsView()
         }
     }

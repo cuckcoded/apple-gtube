@@ -6,7 +6,7 @@ enum MusicSource: Hashable {
     case browse(id: String, params: String?)
     case search(query: String, params: String?)
 
-    static func browse(_ id: String) -> MusicSource { .browse(id: id, params: nil) }
+    static func browseTo(_ id: String) -> MusicSource { .browse(id: id, params: nil) }
 
     static func from(_ t: Target) -> MusicSource? {
         switch t {
@@ -185,10 +185,10 @@ enum LyricsState: Equatable {
 @MainActor @Observable
 final class MusicModel {
     let queue = MusicQueue()
-    let home = MusicPageModel(.browse("FEmusic_home"))
-    let explore = MusicPageModel(.browse("FEmusic_explore"))
+    let home = MusicPageModel(.browseTo("FEmusic_home"))
+    let explore = MusicPageModel(.browseTo("FEmusic_explore"))
     let library: MusicPageModel = {
-        let m = MusicPageModel(.browse("FEmusic_library_landing"))
+        let m = MusicPageModel(.browseTo("FEmusic_library_landing"))
         m.needsLogin = true
         return m
     }()
@@ -298,8 +298,8 @@ final class MusicModel {
         if let r = Parse.youtubeURL(text) {
             switch r {
             case .video(let id, let pl, _): return queue.play(.watch(videoId: id, playlistId: pl, params: nil, index: nil))
-            case .playlist(let id): return open(.browse("VL\(id)"))
-            case .channel(let id) where id.hasPrefix("UC"): return open(.browse(id))
+            case .playlist(let id): return open(.browseTo("VL\(id)"))
+            case .channel(let id) where id.hasPrefix("UC"): return open(.browseTo(id))
             default: break
             }
         }
@@ -404,7 +404,7 @@ final class MusicModel {
         guard info.ready, let id = info.relatedId else { return }
         if relatedId == id { return }
         relatedId = id
-        let m = MusicPageModel(.browse(id))
+        let m = MusicPageModel(.browseTo(id))
         related = m
         m.load()
     }
@@ -519,8 +519,8 @@ final class MusicModel {
                     }
                 }
             }
-            if !items.contains(where: { $0.2 == .browse("VLLM") }) {
-                items.insert(("Liked music", "Auto playlist", .browse("VLLM")), at: 0)
+            if !items.contains(where: { $0.2 == .browseTo("VLLM") }) {
+                items.insert(("Liked music", "Auto playlist", .browseTo("VLLM")), at: 0)
             }
             playlists = items
         }

@@ -24,7 +24,7 @@ public enum Target: Hashable, Sendable {
     case watch(videoId: String?, playlistId: String?, params: String?, index: Int?)
     case search(query: String, params: String?)
 
-    public static func browse(_ id: String) -> Target { .browse(id: id, params: nil) }
+    public static func browseTo(_ id: String) -> Target { .browse(id: id, params: nil) }
 }
 
 public enum VideoKind: Sendable {
@@ -963,16 +963,16 @@ public enum Music {
         func q(_ k: String) -> String? { comps.queryItems?.first { $0.name == k }?.value }
         let segs = comps.path.split(separator: "/").map(String.init)
         switch segs.count {
-        case 0: return .browse("FEmusic_home")
+        case 0: return .browseTo("FEmusic_home")
         case 1:
             switch segs[0] {
             case "watch": return .watch(videoId: q("v"), playlistId: q("list"), params: nil, index: nil)
-            case "playlist": return q("list").map { .browse("VL\($0)") }
+            case "playlist": return q("list").map { .browseTo("VL\($0)") }
             case "search": return q("q").map { .search(query: $0, params: nil) }
             default: return nil
             }
         case 2 where segs[0] == "browse" || segs[0] == "channel":
-            return .browse(segs[1])
+            return .browseTo(segs[1])
         default:
             return nil
         }

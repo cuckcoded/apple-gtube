@@ -369,7 +369,7 @@ final class AppModel {
             search(q)
             return true
         case "gtube-music":
-            music.open(.browse(String(url.absoluteString.dropFirst("gtube-music:".count))))
+            music.open(.browseTo(String(url.absoluteString.dropFirst("gtube-music:".count))))
             return true
         default:
             if let t = Music.musicURL(url.absoluteString) {

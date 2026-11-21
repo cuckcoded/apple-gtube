@@ -67,8 +67,8 @@ func trackByline(_ t: Track, album: Bool = true, info: Bool = true) -> [MLink] {
         Button("Play next") { m.queue.addNext([t]) }
         Button("Add to queue") { m.queue.addLast([t]) }
         Divider()
-        if let id = t.album?.id { Button("Go to album") { m.open(.browse(id)) } }
-        if let id = t.firstArtistId { Button("Go to artist") { m.open(.browse(id)) } }
+        if let id = t.album?.id { Button("Go to album") { m.open(.browseTo(id)) } }
+        if let id = t.firstArtistId { Button("Go to artist") { m.open(.browseTo(id)) } }
         Divider()
         Button("Download…") { AppModel.shared.sheet = .download(t.videoItem) }
         Button("Copy link") {
@@ -93,7 +93,7 @@ func trackByline(_ t: Track, album: Bool = true, info: Bool = true) -> [MLink] {
             Button("Start radio") { m.play(.watch(videoId: nil, playlistId: "RDAMPL\(l)", params: "wAEB", index: nil)) }
         }
         Divider()
-        if let a = artist { Button("Go to artist") { m.open(.browse(a)) } }
+        if let a = artist { Button("Go to artist") { m.open(.browseTo(a)) } }
         if let t = c.target, let url = Music.shareURL(t) {
             Button("Copy link") {
                 copyToPasteboard(url)

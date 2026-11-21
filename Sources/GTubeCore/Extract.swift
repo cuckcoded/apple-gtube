@@ -61,24 +61,28 @@ public enum Tools {
         let err = Pipe()
         p.standardOutput = out
         p.standardError = err
+        final class Box: @unchecked Sendable {
+            var out = Data()
+            var err = Data()
+        }
+        let box = Box()
         return try await withTaskCancellationHandler {
             try await withCheckedThrowingContinuation { (cont: CheckedContinuation<Output, Error>) in
                 let group = DispatchGroup()
-                var outData = Data()
-                var errData = Data()
                 group.enter()
                 DispatchQueue.global().async {
-                    outData = out.fileHandleForReading.readDataToEndOfFile()
+                    box.out = out.fileHandleForReading.readDataToEndOfFile()
                     group.leave()
                 }
                 group.enter()
                 DispatchQueue.global().async {
-                    errData = err.fileHandleForReading.readDataToEndOfFile()
+                    box.err = err.fileHandleForReading.readDataToEndOfFile()
                     group.leave()
                 }
                 p.terminationHandler = { proc in
+                    let status = proc.terminationStatus
                     group.notify(queue: .global()) {
-                        cont.resume(returning: Output(status: proc.terminationStatus, stdout: outData, stderr: errData))
+                        cont.resume(returning: Output(status: status, stdout: box.out, stderr: box.err))
                     }
                 }
                 do {
