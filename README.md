@@ -26,6 +26,11 @@ A native macOS (SwiftUI + AppKit) YouTube and YouTube Music client: a Swift port
   - **Ambient color** and a **spectrum visualizer** behind the player bar, in sync with what you hear (it needs ffmpeg installed).
   - `music.youtube.com` links open in Music mode. The mode you used last is remembered.
 
+## Screenshots
+
+![Trending](docs/screenshots/trending.png)
+![YouTube Music home](docs/screenshots/music-home.png)
+
 ## Install
 
 Builds come from GitHub Actions (`.github/workflows/build.yml`): every run keeps `GTube-macos-arm64.zip` as an artifact, and tagged versions (`v*`) are published as releases. It holds `GTube.app` with libmpv, yt-dlp and deno inside. It isn't notarized: open it with right-click → Open the first time, or run `xattr -dr com.apple.quarantine GTube.app`.
