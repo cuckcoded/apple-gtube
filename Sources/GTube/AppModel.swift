@@ -131,6 +131,7 @@ final class AppModel {
     func start() {
         if started { return }
         started = true
+        Log.info("window shown; yt-dlp: \(Tools.ytdlp ?? "not found"), ffmpeg: \(Tools.ffmpeg ?? "not found")")
         Client.shared.setCookies(Config.loadCookies())
         loggedIn = Client.shared.isLoggedIn
 
